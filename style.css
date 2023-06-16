@@ -14,7 +14,7 @@
     height: 175px;
     border: 2px solid;
     border-radius: 10px;
-    border-color: rgb(247, 133, 133);
+    border-color: rgb(133, 196, 247);
     margin: 12px 0px 12px 20px;
 }
 
@@ -105,4 +105,13 @@
 
 .nomeGinasio > p {
     margin: 4px 0 0 15px;
+}
+
+.campoJogador{
+    display: flex;
+    flex-direction: row;
+    width: 800px;
+    height: 200px;
+    border: 5px solid;
+    border-color: rgb(84, 255, 62);
 }
