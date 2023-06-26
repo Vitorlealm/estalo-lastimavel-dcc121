@@ -115,3 +115,42 @@
     border: 5px solid;
     border-color: rgb(84, 255, 62);
 }
+
+    .campoLateral{
+        display: flex;
+        flex-direction: column;
+        width: 300px;
+        height: 670px;
+        border: solid rgb(177, 177, 177) 4px;
+        margin: -676px 0 0 810px;
+    }
+
+    .status{
+        display: flex;
+        flex-direction: column;
+        height: 400px;
+        border: solid rgb(177, 177, 177) 2px;
+
+    }
+
+    .tituloStatus{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 75px;
+        height: 40px;
+        border: solid rgb(177, 177, 177) 3px;
+        border-radius: 5px;
+        margin: -5px 0 0 100px;
+        padding-left: 30px;
+    }
+
+    .opcoesJogadas{
+        display: flex;
+        display: flex;
+        flex-direction: column;
+        height: 400px;
+        width: 300px;
+        border: solid rgb(177, 177, 177) 2px;
+        padding-top: 5px;
+    }
