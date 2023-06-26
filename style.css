@@ -26,6 +26,37 @@
     text-orientation: upright; /* Mantém o texto orientado para cima */
     white-space: nowrap; /* Impede que o texto quebre em várias linhas */
   }
+  
+  .localCartas{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 700px;
+    height: 200px;
+    margin: -170px 0 10px 50px;
+  }
+
+  .localCartas2{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 700px;
+    height: 200px;
+    margin: -120px 0 10px 50px;
+  }
+
+  .carta{
+    display: flex;
+    flex-direction: row;
+    width: 100px; 
+    height: 160px;
+  }
+
+  .posicaoCarta{
+    display: flex;
+    padding-left: 45px;
+    margin: solid 2px blue;
+  }
 
 .campoNeutro{
     display: flex;
