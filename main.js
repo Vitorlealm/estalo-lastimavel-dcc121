@@ -40,24 +40,52 @@ function embaralhaCartas(jogador, nCartas) {
     return cartasSelecionadas;
 }
 
-function popularSelecaoCartas() {
-   const mao = document.getElementById('campoPC');
-    maoP1.forEach((carta) => {
-        let divCarta = document.createElement('div');
-        divCarta.innerHTML = `<h1> ${carta.Nome} E:${carta.Energia} F:${carta.Força}`;
-        mao.appendChild(divCarta);
+function popularSelecaoCartas(jogador) {
+    if(jogador){
+        const mao = document.getElementById('maoP1');
+        maoP1.forEach((carta) => {
+            let imgCarta = document.createElement('img');
+            imgCarta.classList.add('posicaoCarta');
+            imgCarta.src = `./assets/${carta.Nome}.jpg`;
+            mao.appendChild(imgCarta);
+        })
+    }
+    else{
+        const mao = document.getElementById('maoAI');
+        maoAI.forEach((carta) => {
+            let imgCarta = document.createElement('img');
+            imgCarta.classList.add('posicaoCarta');
+            imgCarta.src = './assets/TraseiraCarta.jpg';
+            mao.appendChild(imgCarta);
     })
+   }
 }
 
 function popularSelecaoGinasios() {
     const selecaGinasios = document.getElementById("ginasios");
 
     ginasios.forEach((ginasio) => {
-      const option = document.createElement("option");
-      option.value = ginasio.id;
-      option.textContent = `${ginasio.nome}`;
-      selecaGinasios.appendChild(option);
+        let ginasioCriado = document.createElement("div");
+        ginasioCriado.classList.add('ginasio')
+        ginasioCriado.innerHTML = 
+            ` <div class="nomeGinasio">
+                <p>Ginásio de ${ginasio.nome}</p>
+            </div>`;
+        ginasio.cartas.forEach((carta) => {
+            ginasioCriado.innerHTML += `<p>${carta.Nome} - E: ${carta.Energia} F:${carta.Forca}</p>`;
+        })
+        selecaGinasios.appendChild(ginasioCriado);
     });
+}
+
+function posicionarCarta(cartaId, ginasioId){
+    const cartaAux = getCartas();
+    cartaAux = cartaAux.filter(carta => carta.id == cartaId);
+    for(let ginasio of ginasios){
+        if(ginasio.id === ginasioId){
+            ginasio.cartas.push(cartaAux);
+        } 
+    }
 }
 
 let rodada = 0;
@@ -65,7 +93,9 @@ let baralhoP1 = cartas.slice();
 let baralhoAI = cartas.slice();
 let maoP1 = embaralhaCartas(true, 4);
 let maoAI = embaralhaCartas(false, 4);
-popularSelecaoCartas();
+popularSelecaoCartas(true);
+popularSelecaoCartas(false);
+
 popularSelecaoGinasios();
 
 async function jogo(rodada){
