@@ -6,7 +6,7 @@ const ginasios = getGinasios();
 function embaralhaCartas(jogador, nCartas) {
     let cartasAux = jogador ? baralhoP1.slice() : baralhoAI.slice();
     if(nCartas > cartasAux){
-        throw new Error(`Não é possível remover ${nCartas} do baralho que contem ${cartasAux.length} cartas.`)
+        console.error(`Não é possível remover ${nCartas} do baralho que contem ${cartasAux.length} cartas.`);
     }
 
     for (let i = cartasAux.length - 1; i > 0; i--) {
@@ -43,6 +43,7 @@ function embaralhaCartas(jogador, nCartas) {
 function popularSelecaoCartas(jogador) {
     if(jogador){
         const mao = document.getElementById('maoP1');
+        mao.innerHTML = '';
         maoP1.forEach((carta) => {
             let imgCarta = document.createElement('img');
             imgCarta.classList.add('posicaoCarta');
@@ -52,6 +53,7 @@ function popularSelecaoCartas(jogador) {
     }
     else{
         const mao = document.getElementById('maoAI');
+        mao.innerHTML = '';
         maoAI.forEach((carta) => {
             let imgCarta = document.createElement('img');
             imgCarta.classList.add('posicaoCarta');
@@ -63,7 +65,10 @@ function popularSelecaoCartas(jogador) {
 
 function popularSelecaoGinasios() {
     const selecaGinasios = document.getElementById("ginasios");
+    //limpa ginasios
+    selecaGinasios.innerHTML = '';
 
+    //cria e preenche os ginasios a partir do estado atual;
     ginasios.forEach((ginasio) => {
         let ginasioCriado = document.createElement("div");
         ginasioCriado.classList.add('ginasio')
@@ -72,7 +77,7 @@ function popularSelecaoGinasios() {
                 <p>Ginásio de ${ginasio.nome}</p>
             </div>`;
         ginasio.cartas.forEach((carta) => {
-            ginasioCriado.innerHTML += `<p>${carta.Nome} - E: ${carta.Energia} F:${carta.Forca}</p>`;
+            ginasioCriado.innerHTML += `<p>${carta.Nome} - E: ${carta.Energia} F:${carta.Forca} P:${carta?.jogador}</p>`;
         })
         selecaGinasios.appendChild(ginasioCriado);
     });
@@ -95,7 +100,6 @@ let maoP1 = embaralhaCartas(true, 4);
 let maoAI = embaralhaCartas(false, 4);
 popularSelecaoCartas(true);
 popularSelecaoCartas(false);
-
 popularSelecaoGinasios();
 
 async function jogo(rodada){
