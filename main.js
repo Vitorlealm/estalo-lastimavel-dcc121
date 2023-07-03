@@ -69,7 +69,7 @@ function popularSelecaoGinasios() {
         ginasioCriado.classList.add('ginasio')
         ginasioCriado.innerHTML = 
             ` <div class="nomeGinasio">
-                <p>Ginásio de ${ginasio.nome}</p>
+                <p>${ginasio.nome}</p>
             </div>`;
         ginasio.cartas.forEach((carta) => {
             ginasioCriado.innerHTML += `<p>${carta.Nome} - E: ${carta.Energia} F:${carta.Forca}</p>`;
