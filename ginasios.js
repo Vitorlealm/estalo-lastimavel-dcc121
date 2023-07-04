@@ -1,16 +1,16 @@
 const ginasios = [
     {
-        "id": 1,
+        "id": 0,
         "nome": "Ginásio de Pewter",
         "cartas": []
     },
     {
-        "id": 2,
+        "id": 1,
         "nome": "Ginásio de Cerulean",
         "cartas": []
     },
     {
-        "id": 3,
+        "id": 2,
         "nome": "Ginásio de Surge",
         "cartas": []
     }

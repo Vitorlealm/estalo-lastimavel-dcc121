@@ -40,6 +40,20 @@ function embaralhaCartas(jogador, nCartas) {
     return cartasSelecionadas;
 }
 
+function identificaCartas(jogador, baralho){
+    if(jogador){
+        for(let carta of baralho){
+            carta.id = 'P' + carta.id;
+        }
+    }
+    else{
+        for(let carta of baralho){
+            carta.id = 'A' + carta.id;
+        }
+    }
+    return baralho;
+}
+
 function popularSelecaoCartas(jogador) {
     if(jogador){
         const mao = document.getElementById('maoP1');
@@ -48,6 +62,10 @@ function popularSelecaoCartas(jogador) {
             let imgCarta = document.createElement('img');
             imgCarta.classList.add('posicaoCarta');
             imgCarta.src = `./assets/${carta.Nome}.jpg`;
+            imgCarta.draggable = true;
+            imgCarta.ondragstart = drag;
+            imgCarta.id = carta.id;
+            imgCarta.alt = `${carta.Nome} F: ${carta.Força} E: ${carta.Energia}`;
             mao.appendChild(imgCarta);
         })
     }
@@ -58,9 +76,59 @@ function popularSelecaoCartas(jogador) {
             let imgCarta = document.createElement('img');
             imgCarta.classList.add('posicaoCarta');
             imgCarta.src = './assets/TraseiraCarta.jpg';
+            imgCarta.draggable = true;
+            imgCarta.ondragstart = drag;
+            imgCarta.id = carta.id;
             mao.appendChild(imgCarta);
     })
    }
+}
+
+function drag(event){
+    event.dataTransfer.setData("text", event.target.id);
+}
+
+function largar(event) {
+    
+    event.preventDefault();
+    const cartaId = event.dataTransfer.getData("text");
+    const ginasio = ginasios[Number(event.target.id)];
+    let cont = 0;
+    if(cartaId.includes('P')){
+        for(let carta of ginasio.cartas){
+            if(carta.id.includes('P')){
+                cont++;
+            }
+        }
+    }else{
+        for(let carta of ginasio.cartas){
+            if(carta.id.includes('A')){
+                cont++;
+            }
+        }
+    }
+    if(cont >= 4){
+        console.error('limite de cartas no ginasio atingido!');
+        return '';
+    } 
+    let carta = cartas.filter((card) => card.id == cartaId.slice(1));
+    ginasios[ginasio.id].cartas.push({
+        id: cartaId,
+        Nome: carta[0].Nome,
+        Energia: carta[0].Energia,
+        Força: carta[0].Força
+    })
+    console.log(ginasios[ginasio.id].cartas)
+    console.log(carta);
+    event = null;
+    
+
+    popularSelecaoGinasios();
+    //event.target.appendChild(carta);
+}
+
+function permiteArrastar(event){
+    event.preventDefault();
 }
 
 function popularSelecaoGinasios() {
@@ -71,31 +139,24 @@ function popularSelecaoGinasios() {
     //cria e preenche os ginasios a partir do estado atual;
     ginasios.forEach((ginasio) => {
         let ginasioCriado = document.createElement("div");
-        ginasioCriado.classList.add('ginasio')
+        ginasioCriado.classList.add('ginasio');
+        ginasioCriado.id = ginasio.id;
+        ginasioCriado.ondragover = permiteArrastar;
+        ginasioCriado.ondrop = largar;
         ginasioCriado.innerHTML = 
             ` <div class="nomeGinasio">
-                <p>Ginásio de ${ginasio.nome}</p>
+                <p>${ginasio.nome}</p>
             </div>`;
         ginasio.cartas.forEach((carta) => {
-            ginasioCriado.innerHTML += `<p>${carta.Nome} - E: ${carta.Energia} F:${carta.Forca} P:${carta?.jogador}</p>`;
+            ginasioCriado.innerHTML += `<p>${carta.Nome} - E: ${carta.Energia} F:${carta.Força}</p>`;
         })
         selecaGinasios.appendChild(ginasioCriado);
     });
 }
 
-function posicionarCarta(cartaId, ginasioId){
-    const cartaAux = getCartas();
-    cartaAux = cartaAux.filter(carta => carta.id == cartaId);
-    for(let ginasio of ginasios){
-        if(ginasio.id === ginasioId){
-            ginasio.cartas.push(cartaAux);
-        } 
-    }
-}
-
 let rodada = 0;
-let baralhoP1 = cartas.slice();
-let baralhoAI = cartas.slice();
+let baralhoP1 = identificaCartas(true, structuredClone(cartas.slice()));
+let baralhoAI = identificaCartas(false, structuredClone(cartas.slice()));
 let maoP1 = embaralhaCartas(true, 4);
 let maoAI = embaralhaCartas(false, 4);
 popularSelecaoCartas(true);
@@ -106,10 +167,8 @@ async function jogo(rodada){
     if(rodada > 6){
         //calcularResultado()
     }else {
-        await new Promise((resolve) => {
-            document.querySelector("form").addEventListener("submit", resolve);
-        });
-        console.log("ola")
+        
+        jogadaEmAndamento = true;
     }
 }
 
