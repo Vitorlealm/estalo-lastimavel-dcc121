@@ -180,11 +180,6 @@ function jogo(rodada){
         alert('fim de jogo');
     }else {
         //Movimentos da IA:
-        if(maoAI.length <= 4){
-            let novaCarta = embaralhaCartas(false,1);
-            maoAI.push(novaCarta[0]);
-        }
-        
         if(rodada<=3){
             for(let [i,carta] of maoAI.entries()){
                 if(carta.Energia <= rodada){
@@ -202,6 +197,11 @@ function jogo(rodada){
                     break;
                 }
             }
+        }
+
+        if(maoAI.length < 4){
+            let novaCarta = embaralhaCartas(false,1);
+            maoAI.push(novaCarta[0]);
         }
         console.log(rodada)
         popularSelecaoCartas(false);
