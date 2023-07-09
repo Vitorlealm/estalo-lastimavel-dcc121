@@ -2,6 +2,7 @@ import { getCartas } from "./cartas.js";
 import { getGinasios } from "./ginasios.js";
 const cartas = getCartas();
 const ginasios = getGinasios();
+let rodada = 1;
 
 function embaralhaCartas(jogador, nCartas) {
     let cartasAux = jogador ? baralhoP1.slice() : baralhoAI.slice();
@@ -154,7 +155,16 @@ function popularSelecaoGinasios() {
     });
 }
 
-let rodada = 0;
+function jogadaIA(){
+
+}
+
+function confirmarJogada(){
+    jogo(rodada++);
+}
+
+const botaoConfirmarJogada = document.getElementById('jogar');
+botaoConfirmarJogada.addEventListener('click', confirmarJogada);
 let baralhoP1 = identificaCartas(true, structuredClone(cartas.slice()));
 let baralhoAI = identificaCartas(false, structuredClone(cartas.slice()));
 let maoP1 = embaralhaCartas(true, 4);
@@ -162,13 +172,45 @@ let maoAI = embaralhaCartas(false, 4);
 popularSelecaoCartas(true);
 popularSelecaoCartas(false);
 popularSelecaoGinasios();
+jogo(rodada);
 
-async function jogo(rodada){
+function jogo(rodada){
     if(rodada > 6){
         //calcularResultado()
+        alert('fim de jogo');
     }else {
+        //Movimentos da IA:
+        if(maoAI.length <= 4){
+            let novaCarta = embaralhaCartas(false,1);
+            maoAI.push(novaCarta[0]);
+        }
         
-        jogadaEmAndamento = true;
+        if(rodada<=3){
+            for(let [i,carta] of maoAI.entries()){
+                if(carta.Energia <= rodada){
+                    ginasios[rodada-1].cartas.push(carta);
+                    maoAI.splice(i,1);
+                    break;
+                }
+            }
+        }
+        else{
+            for(let [i,carta] of maoAI.entries()){
+                if(carta.Energia <= rodada){
+                    ginasios[rodada-4].cartas.push(carta);
+                    maoAI.splice(i,1);
+                    break;
+                }
+            }
+        }
+        console.log(rodada)
+        popularSelecaoCartas(false);
+        popularSelecaoGinasios();
+
+        // jogador
+
+        
+        //jogadaEmAndamento = true;
     }
 }
 
